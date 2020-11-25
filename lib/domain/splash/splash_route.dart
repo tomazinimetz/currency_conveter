@@ -1,5 +1,6 @@
 import 'package:currency_converter/domain/currency_converter/UI/currency_conventer_route.dart';
-import 'package:currency_converter/domain/currency_converter/service/currency_service.dart';
+import 'package:currency_converter/domain/currency_converter/bloc/currency_converted_bloc.dart';
+import 'package:currency_converter/domain/currency_converter/models/currency_converted.dart';
 import 'package:currency_converter/shared/services/hive_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,8 +28,17 @@ class SplashRoute extends StatelessWidget {
 
   Future init() async {
     try {
-      final currency = await GetIt.I.get<CurrencyService>().getLatestCurrency();
-      await GetIt.I.get<HiveService>().saveData(currency.base, currency);
+      final box = GetIt.I.get<HiveService>().get(CurrencyConverted.currentBase);
+      if (box == null) {
+        await GetIt.I
+            .get<CurrencyConvertedBloc>()
+            .getLatestCurrency(CurrencyConverted.currentBase);
+      } else {
+        GetIt.I
+            .get<CurrencyConvertedBloc>()
+            .setCurrencyConverted(CurrencyConverted.currentBase);
+      }
+
       Get.offNamed(CurrencyConverterRoute.name);
     } catch (e) {}
   }
