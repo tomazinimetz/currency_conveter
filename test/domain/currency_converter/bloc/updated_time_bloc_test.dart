@@ -1,5 +1,5 @@
 import 'package:currency_converter/domain/currency_converter/bloc/dropdown_bloc.dart';
-import 'package:currency_converter/domain/currency_converter/models/currency_converted.dart';
+import 'package:currency_converter/domain/currency_converter/bloc/updated_time_bloc.dart';
 import 'package:currency_converter/domain/currency_converter/repository/currency_repository.dart';
 import 'package:currency_converter/domain/currency_converter/repository/currency_repository_impl.dart';
 import 'package:currency_converter/domain/currency_converter/service/currency_service.dart';
@@ -9,20 +9,18 @@ import 'package:currency_converter/shared/services/hive_service_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 
-void main() {
-  testWidgets('Should change current base', (WidgetTester tester) async {
-    registerDependencies();
+main() {
 
-    final bloc = GetIt.I.get<DropdownBloc>();
-    CurrencyConverted.currentBase = "EUR";
-    String newBase = "BRL";
+  
+  testWidgets(
+      "Should set updated currency converted", (WidgetTester tester) async {
+          registerDependencies();
 
-    bloc.changeCurrentBase(newBase);
+          
+          GetIt.I.get<UpdatedTimeBloc>().updateTime(DateTime.now());
 
-    expect(CurrencyConverted.currentBase, newBase);
-    unregisterDependencies();
-  });
-
+        
+      });
 }
 
 void unregisterDependencies() {
