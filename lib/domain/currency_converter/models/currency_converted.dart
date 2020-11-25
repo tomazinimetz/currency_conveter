@@ -1,10 +1,25 @@
 import 'package:currency_converter/domain/currency_converter/models/currency.dart';
+import 'package:currency_converter/utils/formatters/date_format.dart';
 
 class CurrencyConverted extends Currency {
   static List<Currency> all = List<Currency>();
 
   static double currentRate = 1;
-  static String currentBase = "";
+  static double currentValue = 1;
+  static String currentBase = "EUR";
+  static DateTime lastUpdatedTime = DateTime.now();
+
+  static bool isUpdated = false;
+
+  static String get getUpdateStatusText => isUpdated
+      ? "Dados atualizados " +
+          DateFormatUtils.toBrazilianStringFormat(lastUpdatedTime)
+      : "Dados não atualizados";
+
+  static setUpdated(DateTime dateTime) {
+    isUpdated = true;
+    lastUpdatedTime = DateFormatUtils.toBrazilianDateTimeFormat(dateTime);
+  }
 
   static setCurrentBase(String newBase) {
     currentBase = newBase;
@@ -16,10 +31,17 @@ class CurrencyConverted extends Currency {
 
   static void setAllCurrencies(Currency currency) {
     all.clear();
-    all.add(Currency(base: currentBase, value: currentRate));
     currency.rates.forEach((key, value) {
       all.add(Currency(base: key, value: value, calculatedValue: value));
     });
+
+    all.removeWhere((element) => element.base == currency.base);
+
+    all.add(Currency(
+      base: currency.base,
+      value: currency.value,
+      calculatedValue: currency.value,
+    ));
   }
 
   static void calculateValues() {
@@ -35,8 +57,11 @@ class CurrencyConverted extends Currency {
   }
 
   static void setCurrencyConverted(Currency currency) {
-    setCurrentBase(currency.base);
+    if (currentBase != currency.base) {
+      setCurrentBase(currency.base);
+    }
     setAllCurrencies(currency);
     sortList();
+    setUpdated(DateTime.now());
   }
 }

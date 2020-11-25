@@ -1,5 +1,6 @@
 import 'package:currency_converter/domain/currency_converter/bloc/currency_converted_bloc.dart';
 import 'package:currency_converter/domain/currency_converter/bloc/dropdown_bloc.dart';
+import 'package:currency_converter/domain/currency_converter/bloc/updated_time_bloc.dart';
 import 'package:currency_converter/domain/currency_converter/bloc/value_to_convert_bloc.dart';
 import 'package:currency_converter/domain/currency_converter/repository/currency_repository.dart';
 import 'package:currency_converter/domain/currency_converter/repository/currency_repository_impl.dart';
@@ -31,5 +32,6 @@ class AppDependencies {
     getIt.registerSingleton<CurrencyConvertedBloc>(CurrencyConvertedBloc());
     getIt.registerSingleton<DropdownBloc>(DropdownBloc());
     getIt.registerSingleton<ValueToConvertBloc>(ValueToConvertBloc());
+    getIt.registerSingleton<UpdatedTimeBloc>(UpdatedTimeBloc());
   }
 }

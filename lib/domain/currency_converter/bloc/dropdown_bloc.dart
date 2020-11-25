@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:currency_converter/domain/currency_converter/bloc/updated_time_bloc.dart';
 import 'package:currency_converter/domain/currency_converter/models/currency_converted.dart';
 import 'package:currency_converter/domain/currency_converter/service/currency_service.dart';
 import 'package:currency_converter/shared/bloc/bloc.dart';
@@ -13,7 +14,10 @@ class DropdownBloc extends Bloc {
   Stream<String> get dropdownStream => _controller.stream;
 
   void changeCurrentBase(String base) {
-    CurrencyConverted.setCurrentBase(base);
+    final box = _hive.get(base);
+    if (box != null) {
+      CurrencyConverted.setCurrentBase(base);
+    }
     _controller.sink.add(base);
   }
 
@@ -23,12 +27,12 @@ class DropdownBloc extends Bloc {
   }
 
   Future changeCurrency(String base) async {
-    final box = _hive.get(CurrencyConverted.currentBase);
+    final box = _hive.get(base);
     if (box == null) {
       try {
-        final currency =
-            await _service.getCurrencyByBase(CurrencyConverted.currentBase);
+        final currency = await _service.getCurrencyByBase(base);
         await GetIt.I.get<HiveService>().saveData(currency.base, currency);
+        GetIt.I.get<UpdatedTimeBloc>().updateTime(DateTime.now());
       } catch (e) {}
     }
     _controller.sink.add(base);
