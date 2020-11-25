@@ -8,32 +8,48 @@ class CurrencyConvertedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => StreamBuilder(
         stream: GetIt.I.get<CurrencyConvertedBloc>().stream,
-        builder: (ctx, data) => Expanded(
-          child: ListView(
-            children: CurrencyConverted.all
-                .map(
-                  (it) => it.base == CurrencyConverted.currentBase
-                      ? Container()
-                      : Container(
-                          height: 30,
-                          decoration: BoxDecoration(border: Border.all()),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: MediaQuery.of(context).size.width / 2,
-                                height: 20,
-                                child: Text(it.base),
-                              ),
-                              Container(
-                                child: Text(
-                                    "${NumberFormat.currency(locale: 'eu', symbol: '').format(it.calculatedValue)}"),
-                              ),
-                            ],
+        builder: (ctx, data) => GridView.count(
+          crossAxisCount: 3,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          children: CurrencyConverted.all
+              .map(
+                (it) => Card(
+                  color: getColorByRate(it.calculatedValue),
+                  elevation: 10,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          it.base,
+                          style: TextStyle(fontSize: 30, color: Colors.white),
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "\$ ${NumberFormat.currency(locale: 'eu', symbol: '').format(it.calculatedValue)}",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
                           ),
                         ),
-                )
-                .toList(),
-          ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+              .toList(),
         ),
       );
+
+  Color getColorByRate(value) {
+    return value < CurrencyConverted.currentRate
+        ? Colors.red
+        : value == CurrencyConverted.currentRate
+            ? Colors.orange
+            : Colors.green;
+  }
 }
