@@ -27,11 +27,11 @@ class CurrencyConvertedBloc extends Bloc {
     _controller.sink.add(currentBase);
   }
 
-  void setCurrencyConverted(String value) {
+  void setCurrencyConverted(String value) async {
     final box = _hive.get(CurrencyConverted.currentBase);
     if (box != null) {
       CurrencyConverted.setCurrencyConverted(
-        box.get(CurrencyConverted.currentBase),
+        await box.get(CurrencyConverted.currentBase),
       );
     }
     _controller.sink.add(value);
@@ -42,9 +42,11 @@ class CurrencyConvertedBloc extends Bloc {
     _controller.close();
   }
 
-  Future getLatestCurrencyByBase(String base) async{
+  Future getLatestCurrencyByBase(String base) async {
     try {
-      final currency = await GetIt.I.get<CurrencyService>().getCurrencyByBase(CurrencyConverted.currentBase);
+      final currency = await GetIt.I
+          .get<CurrencyService>()
+          .getCurrencyByBase(CurrencyConverted.currentBase);
       await GetIt.I.get<HiveService>().saveData(currency.base, currency);
       GetIt.I.get<UpdatedTimeBloc>().updateTime(DateTime.now());
     } catch (e) {}
