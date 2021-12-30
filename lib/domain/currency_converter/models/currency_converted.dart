@@ -2,11 +2,11 @@ import 'package:currency_converter/domain/currency_converter/models/currency.dar
 import 'package:currency_converter/utils/formatters/date_format.dart';
 
 class CurrencyConverted extends Currency {
-  static List<Currency> all = List<Currency>();
+  static List<Currency> all = <Currency>[];
 
   static double currentRate = 1;
   static double currentValue = 1;
-  static String currentBase = "EUR";
+  static String currentBase = "USD";
   static DateTime lastUpdatedTime = DateTime.now();
 
   static bool isUpdated = false;

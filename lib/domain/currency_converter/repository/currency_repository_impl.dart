@@ -6,11 +6,11 @@ class CurrencyRepositoryImpl
     implements CurrencyRepository {
   @override
   Future getLatestCurrency() async => await getClient().get(
-        "https://api.ratesapi.io/api/latest",
+        'https://freecurrencyapi.net/api/v2/latest?apikey=fde7bc00-691a-11ec-a520-b59c9cccda49',
       );
 
   @override
   Future getCurrencyByBase(String shortening) async => await getClient().get(
-        'https://api.ratesapi.io/api/latest?base=$shortening',
+        'https://freecurrencyapi.net/api/v2/latest?apikey=fde7bc00-691a-11ec-a520-b59c9cccda49&base_currency=$shortening',
       );
 }

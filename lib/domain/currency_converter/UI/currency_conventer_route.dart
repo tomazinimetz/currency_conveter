@@ -7,7 +7,6 @@ import 'package:currency_converter/domain/currency_converter/bloc/dropdown_bloc.
 import 'package:currency_converter/domain/currency_converter/bloc/updated_time_bloc.dart';
 import 'package:currency_converter/domain/currency_converter/models/currency_converted.dart';
 import 'package:currency_converter/utils/src/custom_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -41,7 +40,7 @@ class CurrencyConverterRoute extends StatelessWidget {
               ),
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.symmetric(horizontal:20),
+                  margin: EdgeInsets.symmetric(horizontal: 20),
                   child: CurrencyConvertedScreen(),
                 ),
               ),

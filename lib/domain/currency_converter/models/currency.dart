@@ -16,8 +16,8 @@ class Currency extends HiveObject {
   double calculatedValue;
 
   Currency.fromJson(Map<String, dynamic> json) {
-    base = json['base'];
-    rates = json['rates'];
+    base = json["query"]["base_currency"];
+    rates = json['data'];
     value = 1;
   }
 }

@@ -8,7 +8,7 @@ class CurrencyServiceImpl implements CurrencyService {
   final _repository = GetIt.I.get<CurrencyRepository>();
 
   @override
-  Future getCurrencyByBase(String base) async{
+  Future getCurrencyByBase(String base) async {
     final result = await _repository.getCurrencyByBase(base);
     final currency = Currency.fromJson(result.data);
     CurrencyConverted.setCurrencyConverted(currency);
